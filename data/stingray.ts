@@ -1,0 +1,2 @@
+export const PACKAGE_ID = "0xd23b8fbceb976b19bd456dacb666284ef69c058e0ef9e0d88ecd821dc81c9cc3";
+export const CONFIG_ID = "0x2dd873d3f13497423b7b49343182dc22e96061d7059d39db39b19f94063dc2b3";

@@ -317,7 +317,7 @@ const page = () => {
   };
 
   const { mutate } = useMutation({
-    mutationFn: async (ptbs: Ptb[]) => {
+    mutationFn: async () => {
       const tx = new Transaction();
       const [sui_coin, take_request] = tx.moveCall({
           package: "0xee68e1b93ee52fb9d02264b2bc5ada360336250d6e98e43bf5cc687fc231d1c4",
@@ -366,7 +366,6 @@ const page = () => {
         typeArguments: ["0x2::sui::SUI","0x2::sui::SUI","0xdeeb7a4662eec9f2f3def03fb937a663dddaa2e215b8078a284d026b7946c270::deep::DEEP","0x2::sui::SUI"],
       });
 
-      console.log(ptbs);
       console.log(tx);
       const result = await signAndExecuteTransaction({
         transaction: tx,
@@ -402,184 +401,20 @@ const page = () => {
         <Typography.Title level={3}>PTB</Typography.Title>
         <ConnectButton />
       </Flex>
-      <Form
+      <Button
         style={{
           display: "flex",
           flexDirection: "column",
           gap: "1rem",
           width: "100%",
         }}
-        onFinish={(value) => {
+        onClick={() => {
           mutate();
         }}
       >
-        {Array.from(Array(ptbNumber))?.map((_, i) => (
-          <Flex
-            style={{
-              padding: "1rem",
-              border: "1px solid #ccc",
-            }}
-            vertical
-            gap="1rem"
-          >
-            <Flex
-              style={{
-                flexDirection: "column",
-              }}
-              gap="small"
-            >
-              <Typography.Title level={5}>Package</Typography.Title>
-              <Form.Item name={`package-${i}`} layout="vertical">
-                <Input placeholder="package" />
-              </Form.Item>
-            </Flex>
-            <Flex
-              style={{
-                flexDirection: "column",
-              }}
-              gap="small"
-            >
-              <Typography.Title level={5}>module</Typography.Title>
-              <Form.Item name={`module-${i}`} layout="vertical">
-                <Input placeholder="module" />
-              </Form.Item>
-            </Flex>
-            <Flex
-              style={{
-                flexDirection: "column",
-              }}
-              gap="small"
-            >
-              <Typography.Title level={5}>function</Typography.Title>
-              <Form.Item name={`function-${i}`} layout="vertical">
-                <Input placeholder="function" />
-              </Form.Item>
-            </Flex>
-            <Flex
-              style={{
-                flexDirection: "column",
-              }}
-              gap="small"
-            >
-              <Typography.Title level={5}>Arguments</Typography.Title>
-              <Form.List name={`arguments-${i}`}>
-                {(fields, { add, remove }) => (
-                  <>
-                    {fields.map(({ key, name }, j) => (
-                      <Flex gap="small" key={i}>
-                        <Form.Item
-                          name={[name, "value"]}
-                          style={{
-                            marginBottom: 0,
-                            width: "100%",
-                          }}
-                        >
-                          <Input placeholder="value" />
-                        </Form.Item>
-                        <Form.Item
-                          name={[name, "type"]}
-                          style={{
-                            marginBottom: 0,
-                            minWidth: "100px",
-                          }}
-                        >
-                          <Select placeholder="type">
-                            <Select.Option value="string">string</Select.Option>
-                            <Select.Option value="object">object</Select.Option>
-                            <Select.Option value="u64">u64</Select.Option>
-                            <Select.Option value="u8">u8</Select.Option>
-                            <Select.Option value="bool">bool</Select.Option>
-                            <Select.Option value="gas">gas</Select.Option>
-                          </Select>
-                        </Form.Item>
-
-                        <MoveCallModal argIndex={j} ptbIndex={i} />
-                        <Button
-                          onClick={() => {
-                            remove(name);
-                          }}
-                        >
-                          <CloseOutlined />
-                        </Button>
-                      </Flex>
-                    ))}
-                    <Button
-                      onClick={() => {
-                        add();
-                      }}
-                    >
-                      Add Argument
-                    </Button>
-                  </>
-                )}
-              </Form.List>
-            </Flex>
-            <Flex
-              style={{
-                flexDirection: "column",
-              }}
-              gap="small"
-            >
-              <Typography.Title level={5}>Types</Typography.Title>
-              <Form.List name={`types-${i}`}>
-                {(fields, { add, remove }) => (
-                  <>
-                    {fields.map(({ key, name }) => (
-                      <Flex
-                        key={key}
-                        style={{
-                          gap: "1rem",
-                          width: "100%",
-                        }}
-                      >
-                        <Form.Item
-                          name={name}
-                          style={{
-                            marginBottom: 0,
-                            gap: "1rem",
-                            width: "100%",
-                          }}
-                        >
-                          <Input
-                            placeholder="type"
-                            style={{
-                              width: "100%",
-                            }}
-                          />
-                        </Form.Item>
-                        <Button
-                          onClick={() => {
-                            remove(name);
-                          }}
-                        >
-                          <CloseOutlined />
-                        </Button>
-                      </Flex>
-                    ))}
-                    <Button
-                      onClick={() => {
-                        add();
-                      }}
-                    >
-                      Add types
-                    </Button>
-                  </>
-                )}
-              </Form.List>
-            </Flex>
-          </Flex>
-        ))}
-        <Button
-          onClick={() => {
-            setPtbNumber(ptbNumber + 1);
-          }}
-        >
-          Add ptbs
-        </Button>
-          <Button type="primary" htmlType="submit" >
-            Run
-          </Button>
-      </Form>
+        Run
+      </Button>
+        
     </Flex>
   );
 };
